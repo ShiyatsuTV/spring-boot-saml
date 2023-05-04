@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head>
+		<title>Spring Boot + Spring Security with SAML 2.0</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<h1>PING TEST</h1>
+		
+		<p>Click <a th:href="@{/secured/hello}">here</a></p>
+		
+		<button id="btnLogin">
+			Login
+		</button>
+		
+		<button id="btnLogout">
+			Logout
+		</button>
+		
+		<button id="btnPermitAll">
+			Rest permit all
+		</button>
+		
+		<button id="btnAuthenticated">
+			Rest authenticated
+		</button>
+		
+		<script type="text/javascript">
+			
+			$(document).ready(function() {
+				console.log("Document ready");
+				
+				var btnLogin = $("#btnLogin");
+				
+				btnLogin.on( "click", function() {
+					var jqxhr = $.ajax(
+						{
+							type: "POST",
+							url: "/public/users/login",
+							data: JSON.stringify({ "user" : "admin", "password" : "admin" }),
+							contentType:"application/json; charset=utf-8",
+							success: function(data) {
+							},
+							dataType: "json"
+						}
+					)
+					.done(function(data) {
+						console.log(data);
+					})
+					.fail(function(data) {
+						console.log(data);
+					})
+				});
+				
+				var btnLogout = $("#btnLogout");
+				
+				btnLogout.on( "click", function() {
+					var jqxhr = $.ajax(
+						{
+							type: "GET",
+							url: "/public/users/logout",
+							contentType:"application/json; charset=utf-8",
+							success: function(data) {
+							},
+							xhrFields: {
+								withCredentials: true
+							},
+							dataType: "json"
+						}
+					)
+					.done(function(data) {
+						console.log(data);
+					})
+					.fail(function(data) {
+						console.log(data);
+					})
+				});
+				
+				var btnPermitAll = $("#btnPermitAll");
+				
+				btnPermitAll.on( "click", function() {
+					var jqxhr = $.ajax(
+						{
+							type: "GET",
+							url: "/public/users",
+							contentType:"application/json; charset=utf-8",
+							success: function(data) {
+							},
+							xhrFields: {
+								withCredentials: true
+							},
+							dataType: "json"
+						}
+					)
+					.done(function(data) {
+						console.log(data);
+					})
+					.fail(function(data) {
+						console.log(data);
+					})
+				});
+				
+				var btnAuthenticated = $("#btnAuthenticated");
+				
+				btnAuthenticated.on( "click", function() {
+					var jqxhr = $.ajax(
+						{
+							type: "GET",
+							url: "/private/users",
+							contentType:"application/json; charset=utf-8",
+							success: function(data) {
+							},
+							xhrFields: {
+								withCredentials: true
+							},
+							dataType: "json"
+						}
+					)
+					.done(function(data) {
+						console.log(data);
+					})
+					.fail(function(data) {
+						console.log(data);
+					})
+				});
+				
+			});
+		
+		</script>
+		
+	</body>
+</html>

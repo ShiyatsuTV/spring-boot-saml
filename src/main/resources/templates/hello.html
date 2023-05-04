@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head>
+		<title>Spring Boot + Spring Security with SAML 2.0</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<h1>Secured Page</h1>
+		<p th:text="'Hello, ' + ${name} + '!'" />
+		
+		<button id="btnPermitAll">
+			Rest permit all
+		</button>
+		
+		<button id="btnAuthenticated">
+			Rest authenticated
+		</button>
+		
+		<script type="text/javascript">
+			
+			$(document).ready(function() {
+				console.log("Document ready");
+				
+				var btnPermitAll = $("#btnPermitAll");
+				
+				btnPermitAll.on( "click", function() {
+					var jqxhr = $.get("/public/users")
+					.done(function(data) {
+						console.log(data);
+					})
+					.fail(function(data) {
+						console.log(data);
+					})
+				});
+				
+				var btnAuthenticated = $("#btnAuthenticated");
+				
+				btnAuthenticated.on( "click", function() {
+					var jqxhr = $.get("/private/users")
+					.done(function(data) {
+						console.log(data);
+					})
+					.fail(function(data) {
+						console.log(data);
+					})
+				});
+				
+			});
+		
+		</script>
+		
+		
+	</body>
+</html>
